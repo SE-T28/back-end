@@ -7,6 +7,9 @@
     "start": "node server.js",
     "test": "jest --coverage"
   },
+  "keywords": [
+    "heroku"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/SE-T28/Documents.git"
@@ -33,5 +36,8 @@
   "devDependencies": {
     "jest": "^29.6.4",
     "supertest": "^6.3.3"
+  },
+  "engines": {
+    "node": "16.x"
   }
 }
