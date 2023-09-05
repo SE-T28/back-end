@@ -5,6 +5,7 @@ const swaggerUi= require('swagger-ui-express');
 const swaggerDocument= require('./swagger.json');
 const app=express();
 const PATH=require('path');
+
 app.use(express.json());
 
 require('dotenv').config();
@@ -55,9 +56,9 @@ app.get("/",function (req,res) {
   res.sendFile(PATH.join(path, "index.html"));
 });
 
-app.get("/", function (req, res) {
+/*app.get("/", function (req, res) {
     res.send(req.headers, req.originalUrl, req.method, req.body);
-});
+});*/
 /*
 function initial(){
     Role.estimatedDocumentCount((err, count) => {
