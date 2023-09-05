@@ -48,7 +48,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 //const path= __dirname;
-//const path="C:\Users\huawei\Desktop\SE-progetto\back-end/views/"
 const path=PATH.join(__dirname, "/views");
 app.use(express.static(path));
 
@@ -56,9 +55,9 @@ app.get("/",function (req,res) {
   res.sendFile(PATH.join(path, "index.html"));
 });
 
-/*app.get("/", function (req, res) {
+app.get("/", function (req, res) {
     res.send(req.headers, req.originalUrl, req.method, req.body);
-});*/
+});
 /*
 function initial(){
     Role.estimatedDocumentCount((err, count) => {
