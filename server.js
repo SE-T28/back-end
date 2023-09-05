@@ -7,15 +7,10 @@ const app=express();
 app.use(express.json());
 
 require('dotenv').config();
-let port=process.env.PORT;
-if(port==null || port==""){
-  port=8000;
-}
-app.listen(port);
 
-/*app.listen(process.env.PORT || 8080, () =>
+app.listen(process.env.PORT || 8080, () =>
     console.log('app listening on port ' + process.env.PORT + '!')
-);*/
+);
 
 //-------------connection to DB------------------------------------------
 const db= require('./models');
