@@ -46,7 +46,8 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-const path= __dirname + "/views/";
+//const path= __dirname + "/views/";
+const path="C:\Users\huawei\Desktop\SE-progetto\back-end/views/"
 app.use(express.static(path));
 
 app.get("/",function (req,res) {

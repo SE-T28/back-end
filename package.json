@@ -12,14 +12,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SE-T28/Documents.git"
+    "url": "git+https://github.com/SE-T28/back-end.git"
   },
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/SE-T28/Documents/issues"
-  },
-  "homepage": "https://github.com/SE-T28/Documents#readme",
+  "homepage": "https://github.com/SE-T28/back-end#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
