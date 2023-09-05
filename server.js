@@ -4,6 +4,7 @@ const cors= require("cors");
 const swaggerUi= require('swagger-ui-express');
 const swaggerDocument= require('./swagger.json');
 const app=express();
+const PATH=require('path');
 app.use(express.json());
 
 require('dotenv').config();
@@ -46,13 +47,15 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-const path= __dirname + "/views/";
+//const path= __dirname;
 //const path="C:\Users\huawei\Desktop\SE-progetto\back-end/views/"
+const path=PATH.join(__dirname, "/views");
 app.use(express.static(path));
 
 app.get("/",function (req,res) {
-  res.sendFile(path + "index.html");
+  res.sendFile(PATH.join(path, "index.html"));
 });
+
 /*app.get("/", function (req, res) {
     res.send(req.headers, req.originalUrl, req.method, req.body);
 });*/
