@@ -1,0 +1,4 @@
+#ignore environment variable file
+*.env
+views/
+node_modules

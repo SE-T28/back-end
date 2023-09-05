@@ -1,0 +1,560 @@
+{
+    "openapi":"3.0.3",
+    "info": {
+        "version": "1.0",
+        "title": "ISS4U APIs - OpenAPI 3.0",
+        "description": "**ISS4U** Project Application API ![logo](https://avatars.githubusercontent.com/u/114241658?s=200&v=4)\n\n\n Questa pagina contiene le APIs per utilizzare l'applicazione.\n\nNota che alcune APIs necessitano di una autorizzazione e quindi di un'autenticazione basata su **Bearer Token**\n\n*I sample contengono modelli di richiesta e risposta e i possibili stauts code associati*\n\n<h2>Matteo Parma - Andrea Gravili - Maria Laura La Face</h2>"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "schemes": ["http"],
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
+    "components":{
+        "schemas":{
+            "Task": {
+                "required": ["data_inizio", "data_fine", "nome", "modulo", "completata", "userId"],
+                "properties": {
+                    "data_inizio": {"type": "string", "format": "date"},
+                    "data_fine": {"type": "string", "format": "date"},
+                    "nome": {"type": "string", "default": "nome_task"},
+                    "modulo": {"type": "string", "default": "Unity"},
+                    "completata": {"type": "boolean", "default":"false"},
+                    "userId": {"type": "string"}
+                }
+            },
+            "Modulo":{
+                "required": ["nome", "descrizione", "nazione", "application",
+                            "operator", "contractors", "power", "mass", "launch_date",
+                            "other_details", "image"],
+                "properties":{
+                    "nome" : {"type": "string", "default": "Unity"},
+                    "descrizione" : {"type": "string", "default": "Il modulo Unity è stato il primo ad essere collegato alla ISS. Serve come hub di collegamento tra i vari moduli e come camera di equilibrio."},
+                    "nazione" : {"type": "string", "default": "Stati Uniti"},
+                    "application" : {"type": "string", "default": "Abitazione e supporto tecnico"},
+                    "operator" : {"type": "string", "default": "NASA"},
+                    "contrartors" : {"type": "string", "default": "Boeing"},
+                    "power" : {"type": "string", "default": "8 kW"},
+                    "mass" : {"type": "string", "default": "19.7 t"},
+                    "other_details" : {"type": "string", "default": "Il modulo Unity è stato lanciato il 4 dicembre 1998 a bordo del shuttle orbitale Endeavour"},
+                    "launch_date" : {"type": "string", "format": "date"},
+                    "image": {"type": "string", "default": "https://www.nasa.gov/sites/default/files/thumbnails/image/iss016e052634.jpg"}
+                }
+            },
+            "Utente":{
+                "required": ["nome", "cognome", "email", "numero_telefono", "data_nascita", "password"],
+                "properties":{
+                    "nome": {"type": "string", "default": "Mario"},
+                    "cognome": {"type": "string", "default": "Rossi"},
+                    "email": {"type": "string", "format": "email"},
+                    "numero_telefono": {"type": "string", "default": "123 456789"},
+                    "data_nascita": {"type": "string", "format": "date"},
+                    "password": {"type": "string", "default": "password"},
+                    "role":{"type": "string", "default":"tecnico_interno"}
+                }
+            },
+            "Credenziali":{
+                "required": ["nome", "cognome", "password"],
+                "properties":{
+                    "nome": {"type":"string", "default": "Mario"},
+                    "cognome": {"type": "string", "default": "Rossi"},
+                    "password": {"type": "string", "default": "password"}
+                }
+            },
+            "Agenzia":{
+                "required": ["nome", "logo"],
+                "properties":{
+                    "nome": {"type": "string", "default": "NASA"},
+                    "logo": {"type": "string", "default": "https://www.nasa.gov/sites/default/files/thumbnails/image/nasa-logo-web-rgb.png"}
+                }
+            },
+            "News":{
+                "required": ["titolo", "descrizione"],
+                "properties":{
+                    "titolo": {"type": "string"},
+                    "descrizione": {"type": "string"}
+                }
+            }
+        },
+        "securitySchemes":{
+            "BearerAuth":{
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"   
+            }
+        }
+    },
+
+    "paths": { 
+        "/task": {  
+            "get": {
+                "security":[{"BearerAuth":[]}],
+                "tags": ["Task"],
+                "summary": "Prende tutte le task dal db",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content":{
+                            "application/json":{
+                                "schema": {
+                                    "type": "array",
+                                    "items":{
+                                        "oneOf":[
+                                            {"$ref": "#/components/schemas/Task"}
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400":{
+                        "description": "Bad Request"
+                    },
+                    "401":{
+                        "description": "Unauthorized"
+                    },
+                    "403":{
+                        "description": "Forbidden"
+                    },
+                    "500":{
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+
+            "post":{    
+                "security":[{"BearerAuth":[]}],
+                "tags": ["Task"],
+                "summary": "Viene aggiunta una task",
+                "requestBody":{
+                    "content":{
+                        "application/json":{
+                            "schema":{ "$ref": "#/components/schemas/Task"}
+                        }
+                    }
+                },
+                "responses": {
+                    "201":{
+                        "description": "Created",
+                        "content":{
+                            "application/json":{
+                                "schema": {"$ref": "#/components/schemas/Task"}
+                            }
+                        }
+                    },
+                    "400":{
+                        "description": "Bad Request"
+                    },
+                    "401":{
+                        "description": "Unauthorized"
+                    },
+                    "403":{
+                        "description": "Forbidden"
+                    },
+                    "404":{
+                        "description": "Not Found"
+                    },
+                    "409":{
+                        "description": "Conflict"
+                    },
+                    "500":{
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/task/{nome}": {
+            "get": {
+                "security":[{"BearerAuth":[]}],
+                "tags": ["Task"],
+                "summary": "Ritorna la task con quel nome",
+                "parameters":[{
+                    "in": "path",
+                    "name": "nome",
+                    "schema": {"type": "string"},
+                    "required":"true",
+                    "description": "Nome della task"
+                }],
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "content":{
+                            "application/json":{
+                                "schema":{ "$ref": "#/components/schemas/Task"}
+                            }
+                        }
+                    },
+                    "400":{
+                        "description": "Bad Request"
+                    },
+                    "401":{
+                        "description": "Unauthorized"
+                    },
+                    "403":{
+                        "description": "Forbidden"
+                    },
+                    "404":{
+                        "description": "Not Found"
+                    },
+                    "500":{
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "delete": {
+                "security":[{"BearerAuth":[]}],
+                "tags": ["Task"],
+                "summary": "Elimina la task con quel nome",
+                "parameters":[
+                    {
+                        "in": "path",
+                        "name": "nome",
+                        "schema": {"type": "string"},
+                        "required":"true"
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref": "#/components/schemas/Task"
+                                }
+                            }
+                        }
+                    },
+                    "400":{
+                        "description": "Bad Request"
+                    },
+                    "401":{
+                        "description": "Unauthorized"
+                    },
+                    "403":{
+                        "description": "Forbidden"
+                    },
+                    "404":{
+                        "description": "Not Found"
+                    },
+                    "500":{
+                        "description": "Internal Server Error"
+                    }
+                }    
+            },
+            "patch":{
+                "security":[{"BearerAuth":[]}],
+                "tags": ["Task"],
+                "summary": "Modifica la task selezionata",
+                "requestBody": {
+                    "content": {
+                        "application/json":{
+                            "schema": {"$ref": "#/components/schemas/Task"}
+                        }
+                    }
+                },
+                "parameters":[
+                    {
+                        "in": "path",
+                        "name": "nome",
+                        "schema": {"type": "string"},
+                        "required":"true"
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description": "OK" 
+                    },
+                    "400":{
+                        "description": "Bad Request"
+                    },
+                    "401":{
+                        "description": "Unauthorized"
+                    },
+                    "403":{
+                        "description": "Forbidden"
+                    },
+                    "404":{
+                        "description": "Not Found"
+                    },
+                    "500":{
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+
+        "/moduli" :{
+            "get": {
+                "tags": ["Modulo"],
+                "summary": "Ritorna la lista dei moduli",
+                "responses":{
+                    "200": {
+                        "description": "OK",
+                        "content":{
+                            "application/json":{
+                                "schema": {
+                                    "type": "array",
+                                    "items":{
+                                        "oneOf":[
+                                            {"$ref": "#/components/schemas/Modulo"}
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400":{
+                        "description": "Bad Request"
+                    },
+                    "500":{
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/moduli/{nome}": {
+            "get": {
+                "tags": ["Modulo"],
+                "summary": "Ritorna il modulo con quel nome",
+                "parameters":[{
+                    "in": "path",
+                    "name": "nome",
+                    "schema": {"type": "string"},
+                    "required": "true",
+                    "description": "Nome del modulo"
+                }],
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "content":{
+                            "application/json":{
+                                "schema": {
+                                    "$ref": "#/components/schemas/Modulo"
+                                }
+                            }
+                        }
+                    },
+                    "400":{
+                        "description": "Bad Request"
+                    },
+                    "404":{
+                        "description": "Not Found"
+                    },
+                    "500":{
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "tags": ["Utente"],
+                "summary": "Login utente",
+                "requestBody":{
+                    "content":{
+                        "application/json":{
+                            "schema":{ "$ref": "#/components/schemas/Credenziali"}
+                        }
+                    }
+                },
+                "responses": {
+                    "200":{
+                        "description": "OK",
+                        "content":{
+                            "application/json":{
+                                "schema": {
+                                    "$ref": "#/components/schemas/Utente"
+                                }
+                            }
+                        }
+                    },
+                    "400":{
+                        "description": "Bad Request"
+                    },
+                    "404":{
+                        "description": "Not Found"
+                    },
+                    "500":{
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/crew/addusr": {
+            "post": {
+                "security":[{"BearerAuth":[]}],
+                "tags": ["Utente"],
+                "summary": "Crea un nuovo utente",
+                "requestBody": {
+                    "content": {
+                        "application/json":{
+                            "schema": {"$ref": "#/components/schemas/Utente"}
+                        }
+                    }
+                },
+                "responses":{
+                    "201":{
+                        "description":"Created",
+                        "content":{
+                            "application/json":{
+                                "schema": {
+                                    "$ref": "#/components/schemas/Utente"
+                                }
+                            }
+                        }
+                    },
+                    "400":{
+                        "description": "Bad Request"
+                    },
+                    "401":{
+                        "description": "Unauthorized"
+                    },
+                    "403":{
+                        "description": "Forbidden"
+                    },
+                    "409":{
+                        "description": "Conflict"
+                    },
+                    "500":{
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/crew": {
+            "get":{
+                "tags": ["Utente"],
+                "summary": "Restituisce l'elenco dell'equipaggio",
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "content":{
+                            "application/json":{
+                                "schema": {
+                                    "type": "array",
+                                    "items":{
+                                        "oneOf":[
+                                            {"$ref": "#/components/schemas/Utente"}
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400":{
+                        "description": "Bad Request"
+                    },
+                    "500":{
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/crew/{nome}/{cognome}":{
+            "delete":{
+                "security":[{"BearerAuth":[]}],
+                "tags": ["Utente"],
+                "summary": "Elimina l'utente con quel nome e cognome",
+                "parameters":[
+                    {
+                        "in": "path",
+                        "name": "nome",
+                        "schema": {"type": "string"},
+                        "required":"true"
+                    },
+                    {
+                        "in": "path",
+                        "name": "cognome",
+                        "schema": {"type": "string"},
+                        "required": "true"
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref": "#/components/schemas/Utente"
+                                }
+                            }
+                        }
+                    },
+                    "400":{
+                        "description": "Bad Request"
+                    },
+                    "401":{
+                        "description": "Unauthorized"
+                    },
+                    "403":{
+                        "description": "Forbidden"
+                    },
+                    "404":{
+                        "description": "Not Found"
+                    },
+                    "500":{
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/agenzie":{
+            "get":{
+                "tags": ["Agenzie"],
+                "summary": "Restituisce l'elenco delle agenzie",
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "content":{
+                            "application/json":{
+                                "schema": {
+                                    "type": "array",
+                                    "items":{
+                                        "oneOf":[
+                                            {"$ref": "#/components/schemas/Agenzia"}
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400":{
+                        "description": "Bad Request"
+                    },
+                    "500":{
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/news":{
+            "get":{
+                "tags": ["News"],
+                "summary": "Restituisce tutte le news",
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "content":{
+                            "application/json":{
+                                "schema": {
+                                    "type": "array",
+                                    "items":{
+                                        "oneOf":[
+                                            {"$ref": "#/components/schemas/News"}
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400":{
+                        "description": "Bad Request"
+                    },
+                    "500":{
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        }
+    }
+}
