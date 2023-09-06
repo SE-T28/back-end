@@ -69,10 +69,20 @@
                 }
             },
             "News":{
-                "required": ["titolo", "descrizione"],
+                "required": ["titolo", "descrizione", "link", "copertina"],
                 "properties":{
                     "titolo": {"type": "string"},
-                    "descrizione": {"type": "string"}
+                    "descrizione": {"type": "string"},
+                    "link": {"type": "string"},
+                    "copertina": {"type": "string"}
+                }
+            },
+            "Missioni":{
+                "required": ["titolo", "descrizione", "immagine"],
+                "properties":{
+                    "titolo": {"type": "string"},
+                    "descrizione": {"type": "string"},
+                    "immagine":{"type": "string"}
                 }
             }
         },
@@ -541,6 +551,35 @@
                                     "items":{
                                         "oneOf":[
                                             {"$ref": "#/components/schemas/News"}
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400":{
+                        "description": "Bad Request"
+                    },
+                    "500":{
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/missioni":{
+            "get":{
+                "tags": ["Missioni"],
+                "summary": "Restituisce tutte le missioni effettuate",
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "content":{
+                            "application/json":{
+                                "schema": {
+                                    "type": "array",
+                                    "items":{
+                                        "oneOf":[
+                                            {"$ref": "#/components/schemas/Missioni"}
                                         ]
                                     }
                                 }

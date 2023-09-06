@@ -19,9 +19,7 @@ const deleteUsr= (req, res) => {
         if(!data) {
             return res.status(404).json({message: "User '" + nome + " " + cognome + "' doesn't exist."});
         }else{
-            return res.status(200).json(data); //per il DELETE 200:if the response includes an entity describing the status
-                                               //202: if the action has not yet been enacted,
-                                               //or 204 (No Content) if the action has been enacted but the response does not include an entity.
+            return res.status(200).json(data); 
         }
     });
 };

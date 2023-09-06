@@ -56,36 +56,6 @@ app.get("/",function (req,res) {
   res.sendFile(PATH.join(path, "index.html"));
 });
 
-/*app.get("/", function (req, res) {
-    res.send(req.headers, req.originalUrl, req.method, req.body);
-});*/
-/*
-function initial(){
-    Role.estimatedDocumentCount((err, count) => {
-        if(!err && count==0){
-            new Role({
-                name: "tecnico_interno"
-              }).save(err => {
-                if (err) {
-                  console.log("error", err);
-                }
-        
-                console.log("added 'tecnico_interno' to roles collection");
-              });
-        
-              new Role({
-                name: "amministratore"
-              }).save(err => {
-                if (err) {
-                  console.log("error", err);
-                }
-        
-                console.log("added 'amministratore' to roles collection");
-              });
-        }
-    })
-}*/
-
 const routesTask= require('./routes/task');
 app.use('/', routesTask);
 
@@ -102,10 +72,5 @@ const routesMissioni= require('./routes/missione');
 app.use('/', routesMissioni);
 
 require('./routes/utente')(app);
-//const routesUtente= require('./routes/utente');
-//app.use('/', routesUtente);
 
 require('./routes/auth.routes')(app);
-
-//const routesAuth= require('./routes/auth.routes');
-//app.use('/', routesAuth);
